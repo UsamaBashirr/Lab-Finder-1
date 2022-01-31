@@ -189,6 +189,41 @@
         </div>
     </div>
 
+    <!-- View Patient Modal -->
+    <div class="modal fade" id="viewPatient">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <b class="name">'s</b> information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row invoice-info">
+                        <div class="col-sm-6 col-12 mt-1">
+                            <div class="mb-1">
+                                <span style="font-size: 18px;">Name :</span>
+                                <p class="name"> </p>
+                            </div>
+                            <div class="mb-1">
+                                <span style="font-size: 18px;">Email :</span>
+                                <p id="email"> </p>
+                            </div>
+                            <div class="mb-1">
+                                <span style="font-size: 18px;">Report :</span>
+                                <iframe id="fileName" width="100%"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-success">View Tests</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -206,7 +241,7 @@
                     show: true
                 });
             })
-        
+
 
             $.ajaxSetup({
                 headers: {
@@ -217,31 +252,28 @@
                 let id = $(this).attr('value');
                 $.ajax({
                     type: 'get',
-                    url: "/admin/getUser/" + id,
+                    url: "/patient/viewPatient/" + id,
                     data: {
                         _token: "{{  csrf_token() }}"
                     },
                     success: function(data) {
-                        $('#exampleModal').modal('show');
+                        console.log(data);
+                        $('#viewPatient').modal('show');
                         if (data.user.name == "" || data.user.name == null) {
                             $('.name').text("Name Not Found");
                         } else {
                             $('.name').text(data.user.name);
                         }
-                        if (data.user.location == "" || data.user.location == null) {
-                            $('#location').text("Location Not Found");
+                        if (data.user.email == "" || data.user.email == null) {
+                            $('#email').text("email Not Found");
                         } else {
-                            $('#location').text(data.user.location);
+                            $('#email').text(data.user.email);
                         }
-                        if (data.user.created_at == "" || data.user.created_at == null) {
-                            $('#created_at').text("Date Not Found");
+                        if (data.user.fileName == "" || data.user.fileName == null) {
+                            $('#fileName').attr('alt', "No Report");
                         } else {
-                            $('#created_at').text(data.user.created_at);
-                        }
-                        if (data.user.role == "" || data.user.role == null) {
-                            $('#role').text("Role Not Found");
-                        } else {
-                            $('#role').text(data.user.role);
+                            // $('#fileName').attr('src', "http://157.175.136.92/public/images/profile/" + data.data.logo);
+                            $('#fileName').attr('src', "/storage/uploads/" + data.user.fileName);
                         }
                     }
                 })

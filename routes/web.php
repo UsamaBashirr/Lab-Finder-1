@@ -54,7 +54,8 @@ Route::prefix('patient')->group(function ()
 {
     Route::view('/home', 'patient.home');
     Route::post('/uploadReport', [ReportController::class, 'UploadReport']);
-    Route::delete('/delete/{id}', [ReportController::class, 'deletePatient']);
+    Route::get('/delete/{id}', [ReportController::class, 'deletePatient']);
+    Route::get('/viewPatient/{id}', [ReportController::class, 'viewPatient']);
 });
 
 // Employee Routes

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\report;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -25,6 +26,18 @@ class ReportController extends Controller
     }
     public function deletePatient(Request $request, $id)
     {
-        
+        $patient = User::find($id);
+        $patient->delete();
+        return redirect()->back()->with('success', 'Patient Deleted Successfully');
+    }
+    public function viewPatient(Request $request, $id)
+    {
+        $user = User::find($id);
+        dd($user->id);
+
+        $report = report::find($id);
+        // $report = DB::table('reports')->where('id', $id)->first();
+        dd($report);
+        return response()->json(['user'=>$user, 'report' => $report]);
     }
 }
