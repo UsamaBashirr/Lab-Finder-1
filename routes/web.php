@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LabController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TestController;
 
 Route::view('/', 'index');
@@ -52,6 +53,8 @@ Route::prefix('lab')->group(function ()
 Route::prefix('patient')->group(function () 
 {
     Route::view('/home', 'patient.home');
+    Route::post('/uploadReport', [ReportController::class, 'UploadReport']);
+    Route::delete('/delete/{id}', [ReportController::class, 'deletePatient']);
 });
 
 // Employee Routes
